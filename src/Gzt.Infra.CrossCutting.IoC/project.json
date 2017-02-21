@@ -2,7 +2,10 @@
   "version": "1.0.0-*",
 
   "dependencies": {
+    "Gzt.Application": "1.0.0-*",
+    "Gzt.Domain": "1.0.0-*",
     "Gzt.Infra.CrossCutting.Identity": "1.0.0-*",
+    "Gzt.Infra.Data": "1.0.0-*",
     "Microsoft.NETCore.App": {
       "version": "1.1.0",
       "type": "platform"
