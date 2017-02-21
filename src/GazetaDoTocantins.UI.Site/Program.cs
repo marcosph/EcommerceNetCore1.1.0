@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 
-namespace EcommerceNetCore1._1._0
+namespace GazetaDoTocantins.UI.Site
 {
     public class Program
     {
