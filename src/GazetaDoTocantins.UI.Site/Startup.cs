@@ -13,6 +13,7 @@ using AutoMapper;
 using Gzt.Infra.CrossCutting.Bus;
 using Gzt.Infra.CrossCutting.Identity.Authorization;
 using Gzt.Infra.CrossCutting.IoC;
+using System;
 
 namespace GazetaDoTocantins.UI.Site
 {
@@ -41,7 +42,8 @@ namespace GazetaDoTocantins.UI.Site
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+
+            services.AddIdentity<User, IdentityRole>(options =>
                     options.Cookies.ApplicationCookie.AccessDeniedPath = "/home/access-denied")
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();

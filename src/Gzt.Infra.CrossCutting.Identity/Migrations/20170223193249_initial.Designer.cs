@@ -8,7 +8,7 @@ using Gzt.Infra.CrossCutting.Identity.Data;
 namespace Gzt.Infra.CrossCutting.Identity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20170222020200_initial")]
+    [Migration("20170223193249_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -17,7 +17,56 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.ApplicationUser", b =>
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.Book", b =>
+                {
+                    b.Property<int>("BookId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("BookId");
+
+                    b.ToTable("Book");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.BookCategory", b =>
+                {
+                    b.Property<int>("BookId");
+
+                    b.Property<int>("CategoryId");
+
+                    b.HasKey("BookId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("BookCategory");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryName");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.Endereco", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CEP");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Endereco");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.User", b =>
                 {
                     b.Property<string>("Id")
                         .ValueGeneratedOnAdd();
@@ -35,6 +84,8 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
+
+                    b.Property<string>("NomeCompleto");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
@@ -64,7 +115,20 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
                         .IsUnique()
                         .HasName("UserNameIndex");
 
-                    b.ToTable("AspNetUsers");
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.UsuarioEndereco", b =>
+                {
+                    b.Property<int>("EnderecoId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("EnderecoId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UsuarioEndereco");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -87,7 +151,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
                         .IsUnique()
                         .HasName("RoleNameIndex");
 
-                    b.ToTable("AspNetRoles");
+                    b.ToTable("Role");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -106,7 +170,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetRoleClaims");
+                    b.ToTable("RoleClaim");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
@@ -125,7 +189,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserClaims");
+                    b.ToTable("UserClaim");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
@@ -143,7 +207,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("AspNetUserLogins");
+                    b.ToTable("UserLogin");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
@@ -156,7 +220,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("AspNetUserRoles");
+                    b.ToTable("UserRole");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserToken<string>", b =>
@@ -171,7 +235,33 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("AspNetUserTokens");
+                    b.ToTable("UserToken");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.BookCategory", b =>
+                {
+                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Data.Book", "Book")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Data.Category", "Category")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.UsuarioEndereco", b =>
+                {
+                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.Endereco", "Endereco")
+                        .WithMany("UsuarioEnderecos")
+                        .HasForeignKey("EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.User", "User")
+                        .WithMany("UsuarioEnderecos")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -184,7 +274,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.ApplicationUser")
+                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.User")
                         .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -192,7 +282,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.ApplicationUser")
+                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.User")
                         .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
@@ -205,7 +295,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.ApplicationUser")
+                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.User")
                         .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);

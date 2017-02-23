@@ -1,20 +1,23 @@
-﻿using System.Linq;
-using System.Security.Claims;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
-using Gzt.Infra.CrossCutting.Identity.Models;
-using Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels;
-using Gzt.Infra.CrossCutting.Identity.Services;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Identity;
+using Gzt.Infra.CrossCutting.Identity.Models;
+using Gzt.Infra.CrossCutting.Identity.Services;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
+using Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace GazetaDoTocantins.UI.Site.Controllers
+// http://www.c-sharpcorner.com/article/authentication-and-claim-based-authorisation-with-asp-net-identity-core/
+
+namespace GazetaDoTocantins.UI.Site.ControllersAdmin
 {
-    [Authorize]
-    public class AccountController : Controller
+    public class AdminController : Controller
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
@@ -22,7 +25,7 @@ namespace GazetaDoTocantins.UI.Site.Controllers
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
 
-        public AccountController(
+        public AdminController(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
             IEmailSender emailSender,
@@ -33,14 +36,20 @@ namespace GazetaDoTocantins.UI.Site.Controllers
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
-            _logger = loggerFactory.CreateLogger<AccountController>();
+            _logger = loggerFactory.CreateLogger<AdminController>();
+        }
+
+        [Authorize]
+        public IActionResult Admin()
+        {            
+            return View();
         }
 
         //
         // GET: /Account/Login
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult Login(string returnUrl = null)
+        public IActionResult LoginAdmin(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
@@ -51,7 +60,7 @@ namespace GazetaDoTocantins.UI.Site.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginViewModel model, string returnUrl = null)
+        public async Task<IActionResult> LoginAdmin(LoginViewModel model, string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
@@ -141,7 +150,7 @@ namespace GazetaDoTocantins.UI.Site.Controllers
         {
             await _signInManager.SignOutAsync();
             _logger.LogInformation(4, "User logged out.");
-            return RedirectToAction(nameof(HomeController.Index), "Home");
+            return RedirectToAction(nameof(AdminController.LoginAdmin), "Admin");
         }
 
         //
@@ -176,12 +185,12 @@ namespace GazetaDoTocantins.UI.Site.Controllers
             if (remoteError != null)
             {
                 ModelState.AddModelError(string.Empty, $"Error from external provider: {remoteError}");
-                return View(nameof(Login));
+                return View(nameof(LoginAdmin));
             }
             var info = await _signInManager.GetExternalLoginInfoAsync();
             if (info == null)
             {
-                return RedirectToAction(nameof(Login));
+                return RedirectToAction(nameof(LoginAdmin));
             }
 
             // Sign in the user with this external login provider if the user already has a login.
@@ -340,12 +349,12 @@ namespace GazetaDoTocantins.UI.Site.Controllers
             if (user == null)
             {
                 // Don't reveal that the user does not exist
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                return RedirectToAction(nameof(AdminController.ResetPasswordConfirmation), "Account");
             }
             var result = await _userManager.ResetPasswordAsync(user, model.Code, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(AccountController.ResetPasswordConfirmation), "Account");
+                return RedirectToAction(nameof(AdminController.ResetPasswordConfirmation), "Account");
             }
             AddErrors(result);
             return View();
@@ -484,7 +493,7 @@ namespace GazetaDoTocantins.UI.Site.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(HomeController.Index), "Home");
+                return RedirectToAction(nameof(AdminController.Admin), "Admin");
             }
         }
 
