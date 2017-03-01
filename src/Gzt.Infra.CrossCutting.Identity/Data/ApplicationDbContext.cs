@@ -1,42 +1,16 @@
-﻿using System.IO;
-using Gzt.Infra.CrossCutting.Identity.Models;
+﻿using Gzt.Infra.CrossCutting.Identity.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Gzt.Infra.CrossCutting.Identity.Services;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace Gzt.Infra.CrossCutting.Identity.Data
 {
-    public class Book
-    {
-        public int BookId { get; set; }
-        public string Title { get; set; }
-       
-        public virtual ICollection<BookCategory> BookCategories { get; set; }
-    }
-
-    public class Category
-    {
-        public int CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public virtual ICollection<BookCategory> BookCategories { get; set; }
-    }
-
-    public class BookCategory
-    {
-        public int BookId { get; set; }
-        public Book Book { get; set; }
-        public int CategoryId { get; set; }
-        public Category Category { get; set; }
-    }
 
     public class ApplicationDbContext : IdentityDbContext<User,IdentityRole, string>
     {
-       // public DbSet<Endereco> Endereco { get; set; }
-        //public DbSet<Book> Book { get; set; }
-        //public DbSet<Category> Category { get; set; }
+        public DbSet<PessoaFisica> PessoaFisicas { get; set; }
+        public DbSet<PessoaJuridica> PessoaJuridicas { get; set; }        
+        public DbSet<Telefone> Telefones { get; set; }
+        
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options){}
         public ApplicationDbContext(){}
@@ -51,6 +25,11 @@ namespace Gzt.Infra.CrossCutting.Identity.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Telefone>()
+             .HasOne(e => e.User)
+             .WithMany(c => c.Telefones);
+
             #region "Identity"
             modelBuilder.Entity<User>()
               .ToTable("User");
@@ -87,8 +66,6 @@ namespace Gzt.Infra.CrossCutting.Identity.Data
             #endregion
 
             //----------------------------------------
-
-
             modelBuilder.Entity<UsuarioEndereco>()
                  .HasKey(x => new { x.EnderecoId, x.UserId });
 
@@ -100,20 +77,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Data
             modelBuilder.Entity<UsuarioEndereco>()
                 .HasOne(x => x.Endereco)
                 .WithMany(y => y.UsuarioEnderecos)
-                .HasForeignKey(x => x.EnderecoId);
-            //-------------------------------
-            modelBuilder.Entity<BookCategory>()
-                 .HasKey(bc => new { bc.BookId, bc.CategoryId });
-
-            modelBuilder.Entity<BookCategory>()
-                .HasOne(bc => bc.Book)
-                .WithMany(b => b.BookCategories)
-                .HasForeignKey(bc => bc.BookId);
-
-            modelBuilder.Entity<BookCategory>()
-                .HasOne(bc => bc.Category)
-                .WithMany(c => c.BookCategories)
-                .HasForeignKey(bc => bc.CategoryId);
+                .HasForeignKey(x => x.EnderecoId);           
             // builder.Entity<Blog>().ForSqlServerIsMemoryOptimized();
 
             // Customize the ASP.NET Identity model and override the defaults if needed.

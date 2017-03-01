@@ -9,44 +9,79 @@ using Gzt.Infra.CrossCutting.Identity.Models;
 namespace Gzt.Infra.CrossCutting.Identity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170225204607_telefone")]
+    partial class telefone
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.Book", b =>
+                {
+                    b.Property<int>("BookId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Title");
+
+                    b.HasKey("BookId");
+
+                    b.ToTable("Book");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.BookCategory", b =>
+                {
+                    b.Property<int>("BookId");
+
+                    b.Property<int>("CategoryId");
+
+                    b.HasKey("BookId", "CategoryId");
+
+                    b.HasIndex("CategoryId");
+
+                    b.ToTable("BookCategory");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("CategoryName");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Category");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.Contract", b =>
+                {
+                    b.Property<int>("ContractId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<decimal>("Charge");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired();
+
+                    b.Property<int>("Months");
+
+                    b.Property<DateTime>("StartDate");
+
+                    b.HasKey("ContractId");
+
+                    b.ToTable("Contracts");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("Contract");
+                });
 
             modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.Endereco", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Bairro");
-
-                    b.Property<string>("CEP")
-                        .HasMaxLength(8);
-
-                    b.Property<string>("Complemento");
-
-                    b.Property<int>("EnderecoTipo");
-
-                    b.Property<string>("Endereco_");
-
-                    b.Property<string>("Estado");
-
-                    b.Property<string>("IdentificaoDoEndereco");
-
-                    b.Property<string>("Municipio");
-
-                    b.Property<string>("NomeDestinatario");
-
-                    b.Property<string>("Numero");
-
-                    b.Property<string>("PontoReferencia");
-
-                    b.Property<string>("UF")
-                        .HasMaxLength(2);
+                    b.Property<string>("CEP");
 
                     b.HasKey("Id");
 
@@ -246,6 +281,39 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
                     b.ToTable("UserToken");
                 });
 
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.BroadBandContract", b =>
+                {
+                    b.HasBaseType("Gzt.Infra.CrossCutting.Identity.Data.Contract");
+
+                    b.Property<int>("DownloadSpeed");
+
+                    b.ToTable("BroadBandContract");
+
+                    b.HasDiscriminator().HasValue("BroadBandContract");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.MobileContract", b =>
+                {
+                    b.HasBaseType("Gzt.Infra.CrossCutting.Identity.Data.Contract");
+
+                    b.Property<string>("MobileNumber");
+
+                    b.ToTable("MobileContract");
+
+                    b.HasDiscriminator().HasValue("MobileContract");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.TvContract", b =>
+                {
+                    b.HasBaseType("Gzt.Infra.CrossCutting.Identity.Data.Contract");
+
+                    b.Property<int>("PackageType");
+
+                    b.ToTable("TvContract");
+
+                    b.HasDiscriminator().HasValue("TvContract");
+                });
+
             modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.PessoaFisica", b =>
                 {
                     b.HasBaseType("Gzt.Infra.CrossCutting.Identity.Models.User");
@@ -284,6 +352,19 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
                     b.ToTable("PessoaJuridica");
 
                     b.HasDiscriminator().HasValue("PessoaJuridica");
+                });
+
+            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Data.BookCategory", b =>
+                {
+                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Data.Book", "Book")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Data.Category", "Category")
+                        .WithMany("BookCategories")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.Telefone", b =>

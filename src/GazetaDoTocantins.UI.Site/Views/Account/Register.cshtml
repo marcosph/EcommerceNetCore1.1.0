@@ -4,40 +4,268 @@
     ViewData["Title"] = "Register";
 }
 
-<h2>@ViewData["Title"].</h2>
+<h2>Identificação</h2>
+<hr />
+<form id="cliente_cadastro" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+    <div class="highlight" id="divs">
+        <label class="radio-inline">
+            <input type="radio" name="radioGroup" id="FlagPF" value="123"> Pessoa Física
+        </label>
+        <label class="radio-inline">
+            <input type="radio" name="radioGroup" id="FlagPJ" value="456"> Pessoa Jurídica
+        </label>
+    </div>  
+    
+    <div class="highlight">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="col-lg-6" id="info_123" style="display:block;">
+            <h3  style="color:#e89005;">Dados Pessoais</h3><hr />
+            <div class="form-group">
+                <label asp-for="NomeCompleto" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="NomeCompleto" class="form-control" placeholder="Nome" />
+                    <span asp-validation-for="NomeCompleto" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Cpf" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Cpf" class="form-control" placeholder="CPF" />
+                    <span asp-validation-for="Cpf" class="text-danger"></span>
+                </div>
+            </div>
 
-<form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
-    <h4>Create a new account.</h4>
-    <hr />
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="Email" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Email" class="form-control" />
-            <span asp-validation-for="Email" class="text-danger"></span>
         </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="Password" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="Password" class="form-control" />
-            <span asp-validation-for="Password" class="text-danger"></span>
+        <div class="col-lg-6" id="info_456" style="display:none;">
+            <h3 style="color:#e89005;">Dados da empresa</h3><hr />
+            <div class="form-group">
+                <label asp-for="RazaoSocial" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="RazaoSocial" class="form-control" placeholder="Razão Social" />
+                    <span asp-validation-for="RazaoSocial" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="NomeFantasia" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="NomeFantasia" class="form-control" placeholder="Nome Fantasia" />
+                    <span asp-validation-for="NomeFantasia" class="text-danger"></span>
+                </div>
+            </div>
+
         </div>
-    </div>
-    <div class="form-group">
-        <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
-        <div class="col-md-10">
-            <input asp-for="ConfirmPassword" class="form-control" />
-            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        <div class="col-lg-6">
+            <h3 style="color:#e89005;">Dados de acesso</h3>
+            <hr />
+            <div class="form-group">
+                <label asp-for="Email" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="Password" class="form-control" />
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
+                <div class="col-md-10">
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button type="submit" class="btn btn-success">Register</button>
+       
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <button type="submit" class="btn btn-success">Cadastrar</button>
+            </div>
         </div>
     </div>
 </form>
 
+<hr />
+<table>
+    <tr>
+        <th>Days of Week</th>
+        <td>
+            <div class="checkbox-group" id="checkboxes">
+                <ul>
+                    <li>
+                        <input type="checkbox" id="mon" />
+                        <label for="mon">MON</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="tue" />
+                        <label for="tue">TUE</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="wed" />
+                        <label for="wed">WED</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="thur" />
+                        <label for="thur">THUR</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="fri" />
+                        <label for="fri">FRI</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="sat" />
+                        <label for="sat">SAT</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="sun" />
+                        <label for="sun">SUN</label>
+                    </li>
+                </ul>
+            </div>
+            <span id="allChecked" style="display:block; width:425px; text-align:center; color:#999999;">
+                (all days selected)
+            </span>
+        </td>
+    </tr>
+
+</table>
+
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    <script type="text/javascript">
+        
+        $(document).ready(function () {            
+            myControlValues();
+        });
+
+        $(":input[type='radio']").on("change", function () {
+            $('div[id^=info_]').hide();
+            if ($(this).prop("checked")) {
+                var checkedRadio = '#info_' + $(this).val();
+                $(checkedRadio).show();
+            }
+        });
+        function myControlValues() {
+            document.querySelector('input[name=radioGroup][value=123]').checked = true;
+          //  document.getElementById("pj").style.display = "none";
+
+        }
+    </script>
+    <style type="text/css">
+    .highlight {
+        background-color: #f7f7f9;
+        border: 1px solid #e1e1e8;
+        border-radius: 4px;
+        margin-bottom: 14px;
+        padding: 9px 14px;
+    }
+
+    .bs-example {
+        background-color: #fff;
+        border-color: #ddd;
+        border-radius: 4px 4px 0 0;
+        border-width: 1px;
+        box-shadow: none;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    legend_ {
+        border-bottom: 1px solid #b7cedf;
+        color: #e89005;
+        font-size: 1.8em;
+        font-weight: bold;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+        width: 100%;
+    }
+
+    table select {
+    font-family: "ProximaNova",Helvetica,Arial,Verdana,sans-serif;
+    height: 26px;
+    line-height: normal;
+    margin-bottom: 0;
+    padding: 3px;
+}
+
+table th {
+    font-family: "ProximaNovaSemibold" ,Helvetica,Arial,Verdana,sans-serif;
+    font-size: 13px;
+    font-weight: normal;
+    padding: 0px 6px 6px 12px;
+    text-align: left;
+    width: 20%;
+}
+
+table td {
+    color: #333333;
+    font-size: 13px;
+    padding: 6px;
+    text-align: left;
+}
+
+.checkbox-group {
+}
+.checkbox-group ul {
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+.checkbox-group ul > li {
+    display: inline;
+}
+.checkbox-group input {
+    float: left;
+}
+.checkbox-group input {
+    display: none;
+}
+.checkbox-group ul > li > label {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: rgba(0, 0, 0, 0);
+    border-color: #CCCCCC;
+    border-image: none;
+    border-style: solid;
+    border-width: 1px 1px 1px 0;
+    box-shadow: 0 5px 5px -6px rgba(0, 0, 0, 0.8) inset;
+    color: #444444;
+    float: left;
+    font-family: helvetica;
+    font-size: 12px;
+    line-height: 20px;
+    padding: 5px 12px 2px;
+    text-decoration: none;
+}
+.checkbox-group ul > li:first-child > label {
+    border-bottom-left-radius: 4px;
+    border-left-width: 1px;
+    border-top-left-radius: 4px;
+}
+.checkbox-group ul > li:last-child > label {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+.checkbox-group ul > li > *:checked + label {
+    background-color: #3399CC;
+    background-image: -moz-linear-gradient(center top , rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.2) 100%);
+    color: #FFFFFF;
+}
+.checkbox-group ul > li > *:checked + *:hover, .checkbox-group ul > li > *:checked + label:focus {
+    background-color: #3399CC;
+    background-image: none;
+}
+.checkbox-group ul > li > label:hover, .checkbox-group ul > li > label:focus {
+    background-color: #CCCCCC;
+    background-image: none;
+    color: #FFFFFF;
+    cursor: pointer;
+}
+</style>
 }

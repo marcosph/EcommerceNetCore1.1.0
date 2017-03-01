@@ -4,6 +4,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels
 {
     public class LoginViewModel
     {
+        
         [Required]
         [EmailAddress]
         public string Email { get; set; }
