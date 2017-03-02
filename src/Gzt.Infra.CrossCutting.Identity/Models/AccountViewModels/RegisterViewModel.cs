@@ -1,9 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
+        [Required]
+        public PessoaTipo PessoaTipo { get; set; }
+
+        [Required]
+        public TelefoneTipo TelefoneTipo { get; set; }
+
         [Required]
         [Display(Name = "Razao Social")]
         public string RazaoSocial { get; set; }
@@ -20,7 +28,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels
         public string CNPJ { get; set; }
         //-----------------------------
         [Required]
-        [Display(Name = "Nome")]
+        [Display(Name = "Nome Completo")]
         public string NomeCompleto { get; set; }
 
         [Required]
@@ -43,5 +51,15 @@ namespace Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels
         [Display(Name = "Confirmar Senha")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+
+    }
+    [Flags]
+    public enum PessoaTipo
+    {
+        [Display(Name = "Pessoa Fisica")]
+        Fisica,
+        [Display(Name = "Pessoa Juridica")]
+        Juridica
     }
 }

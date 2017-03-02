@@ -1,4 +1,5 @@
 ﻿@using System.Threading.Tasks
+@using GazetaDoTocantins.UI.Site.Extensions
 @model Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels.RegisterViewModel
 @{
     ViewData["Title"] = "Register";
@@ -6,87 +7,75 @@
 
 <h2>Identificação</h2>
 <hr />
-<form id="cliente_cadastro" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+<form id="cliente_cadastro" asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post" >
     <div class="highlight" id="divs">
-        <label class="radio-inline">
-            <input type="radio" name="radioGroup" id="FlagPF" value="123"> Pessoa Física
+        @foreach (PessoaTipo gender in Enum.GetValues(typeof(PessoaTipo)))
+        {
+            <label class="radio-inline">
+                <input asp-for="PessoaTipo" type="radio" value="@gender" />
+                @gender.GetDisplayName()
+            </label>
+        }
+        @*<label class="radio-inline">
+            <input type="radio" name="radioGroup" id="FlagPF" value="0" > Pessoa Física
         </label>
         <label class="radio-inline">
-            <input type="radio" name="radioGroup" id="FlagPJ" value="456"> Pessoa Jurídica
-        </label>
-    </div>  
-    
+            <input type="radio" name="radioGroup" id="FlagPJ" value="1"> Pessoa Jurídica
+        </label>*@
+    </div>      
     <div class="highlight">
         <div asp-validation-summary="All" class="text-danger"></div>
-        <div class="col-lg-6" id="info_123" style="display:block;">
+        <div class="col-lg-6" id="info_Fisica" style="display:block;">
             <h3  style="color:#e89005;">Dados Pessoais</h3><hr />
             <div class="form-group">
-                <label asp-for="NomeCompleto" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="NomeCompleto" class="form-control" placeholder="Nome" />
-                    <span asp-validation-for="NomeCompleto" class="text-danger"></span>
-                </div>
+                <label asp-for="NomeCompleto"></label>               
+                <input asp-for="NomeCompleto" class="form-control" placeholder="Nome Completo" />
+                <span asp-validation-for="NomeCompleto" class="text-danger"></span>               
             </div>
             <div class="form-group">
-                <label asp-for="Cpf" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Cpf" class="form-control" placeholder="CPF" />
-                    <span asp-validation-for="Cpf" class="text-danger"></span>
-                </div>
+                <label asp-for="Cpf"></label>                
+                <input asp-for="Cpf" class="form-control" placeholder="CPF" maxlength="14" />
+                <span asp-validation-for="Cpf" class="text-danger"></span>
             </div>
-
         </div>
-        <div class="col-lg-6" id="info_456" style="display:none;">
+        <div class="col-lg-6" id="info_Juridica" style="display:none;">
             <h3 style="color:#e89005;">Dados da empresa</h3><hr />
             <div class="form-group">
-                <label asp-for="RazaoSocial" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="RazaoSocial" class="form-control" placeholder="Razão Social" />
-                    <span asp-validation-for="RazaoSocial" class="text-danger"></span>
-                </div>
+                <label asp-for="RazaoSocial"></label>
+                <input asp-for="RazaoSocial" class="form-control" placeholder="Razão Social" />
+                <span asp-validation-for="RazaoSocial" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="NomeFantasia" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="NomeFantasia" class="form-control" placeholder="Nome Fantasia" />
-                    <span asp-validation-for="NomeFantasia" class="text-danger"></span>
-                </div>
+                <label asp-for="NomeFantasia"></label>
+                <input asp-for="NomeFantasia" class="form-control" placeholder="Nome Fantasia" />
+                <span asp-validation-for="NomeFantasia" class="text-danger"></span>
             </div>
-
         </div>
         <div class="col-lg-6">
             <h3 style="color:#e89005;">Dados de acesso</h3>
             <hr />
             <div class="form-group">
-                <label asp-for="Email" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Email" class="form-control" />
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
+                <label asp-for="Email"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+           </div>
+            <div class="form-group">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="Password" class="form-control" />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
+                <label asp-for="ConfirmPassword"></label>
+                <input asp-for="ConfirmPassword" class="form-control" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ConfirmPassword" class="col-md-2 control-label"></label>
-                <div class="col-md-10">
-                    <input asp-for="ConfirmPassword" class="form-control" />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-            </div>
-        </div>
-       
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="submit" class="btn btn-success">Cadastrar</button>
-            </div>
-        </div>
+        </div>      
+        <button type="submit" class="btn btn-success">Cadastrar</button>          
     </div>
 </form>
+
+
+
 
 <hr />
 <table>
@@ -134,11 +123,13 @@
 </table>
 
 @section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); } 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
     <script type="text/javascript">
         
         $(document).ready(function () {            
             myControlValues();
+           
         });
 
         $(":input[type='radio']").on("change", function () {
@@ -149,9 +140,10 @@
             }
         });
         function myControlValues() {
-            document.querySelector('input[name=radioGroup][value=123]').checked = true;
-          //  document.getElementById("pj").style.display = "none";
-
+            document.getElementById("PessoaTipo").checked = true;
+            $('#Cpf').mask('000.000.000-00', { reverse: true });
+            $('#cnpj').mask('00.000.000/0000-00', { reverse: true });
+           
         }
     </script>
     <style type="text/css">
