@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
@@ -6,11 +8,11 @@ namespace Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels
 {
     public class RegisterViewModel
     {
+       
         [Required]
         public PessoaTipo PessoaTipo { get; set; }
-
-        [Required]
-        public TelefoneTipo TelefoneTipo { get; set; }
+     
+        public EnumTelefoneTipo? EnumTelefoneTipo { get;set; }
 
         [Required]
         [Display(Name = "Razao Social")]
@@ -37,6 +39,10 @@ namespace Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels
 
         //-----------------------
         [Required]
+        [Display(Name = "Telefone")]
+        public string Telefone { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
@@ -62,4 +68,16 @@ namespace Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels
         [Display(Name = "Pessoa Juridica")]
         Juridica
     }
+
+    public enum EnumTelefoneTipo
+    {
+        [Display(Name = "Residencial")]
+        Residencial= 1,
+        [Display(Name = "Celular")]
+        Celular = 2,
+        [Display(Name = "Comercial")]
+        Comercial =3,
+
+    }
+    
 }

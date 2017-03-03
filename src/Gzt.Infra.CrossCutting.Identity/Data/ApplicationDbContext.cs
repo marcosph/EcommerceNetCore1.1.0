@@ -9,8 +9,11 @@ namespace Gzt.Infra.CrossCutting.Identity.Data
     {
         public DbSet<PessoaFisica> PessoaFisicas { get; set; }
         public DbSet<PessoaJuridica> PessoaJuridicas { get; set; }        
-        public DbSet<Telefone> Telefones { get; set; }
-        
+        public DbSet<Telefone> Telefone { get; set; }
+        public DbSet<TelefoneTipo> TelefoneTipo { get; set; }
+        public DbSet<Endereco> Endereco { get; set; }
+        public DbSet<EnderecoTipo> EnderecoTipo { get; set; }
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options){}
         public ApplicationDbContext(){}
@@ -29,6 +32,11 @@ namespace Gzt.Infra.CrossCutting.Identity.Data
             modelBuilder.Entity<Telefone>()
              .HasOne(e => e.User)
              .WithMany(c => c.Telefones);
+
+            modelBuilder.Entity<TelefoneTipo>()
+            .HasOne(p => p.Telefone)
+            .WithOne(i => i.TelefoneTipo)
+            .HasForeignKey<Telefone>(b => b.TelefoneTipoId);
 
             #region "Identity"
             modelBuilder.Entity<User>()
@@ -77,7 +85,13 @@ namespace Gzt.Infra.CrossCutting.Identity.Data
             modelBuilder.Entity<UsuarioEndereco>()
                 .HasOne(x => x.Endereco)
                 .WithMany(y => y.UsuarioEnderecos)
-                .HasForeignKey(x => x.EnderecoId);           
+                .HasForeignKey(x => x.EnderecoId);
+
+
+            modelBuilder.Entity<EnderecoTipo>()
+            .HasOne(p => p.Endereco)
+            .WithOne(i => i.EnderecoTipo)
+            .HasForeignKey<Endereco>(b => b.EnderecoTipoId);
             // builder.Entity<Blog>().ForSqlServerIsMemoryOptimized();
 
             // Customize the ASP.NET Identity model and override the defaults if needed.

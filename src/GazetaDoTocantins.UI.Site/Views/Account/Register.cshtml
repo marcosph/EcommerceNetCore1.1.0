@@ -16,12 +16,7 @@
                 @gender.GetDisplayName()
             </label>
         }
-        @*<label class="radio-inline">
-            <input type="radio" name="radioGroup" id="FlagPF" value="0" > Pessoa Física
-        </label>
-        <label class="radio-inline">
-            <input type="radio" name="radioGroup" id="FlagPJ" value="1"> Pessoa Jurídica
-        </label>*@
+       
     </div>      
     <div class="highlight">
         <div asp-validation-summary="All" class="text-danger"></div>
@@ -36,6 +31,21 @@
                 <label asp-for="Cpf"></label>                
                 <input asp-for="Cpf" class="form-control" placeholder="CPF" maxlength="14" />
                 <span asp-validation-for="Cpf" class="text-danger"></span>
+            </div>
+            <div class="form-group row">
+                <div class="col-sm-4" style="margin-right:-23px;">
+                    <label>Telefone</label>
+                    <select  class="form-control" asp-for="EnumTelefoneTipo" asp-items="Html.GetEnumSelectList<EnumTelefoneTipo>()">                        
+                    </select>
+                </div>
+                <div class="col-lg-2" style="margin-right:-23px;">
+                    <label>.</label>
+                    <input type="text" class="form-control" name="name" value="" placeholder="DDD" />
+                </div>
+                <div class="col-lg-4">
+                    <label>.</label>
+                    <input type="text" class="form-control" name="name" value="" placeholder="Telefone" />
+                </div>                                
             </div>
         </div>
         <div class="col-lg-6" id="info_Juridica" style="display:none;">
@@ -69,12 +79,48 @@
                 <input asp-for="ConfirmPassword" class="form-control" />
                 <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
-        </div>      
+        </div>  
+         
         <button type="submit" class="btn btn-success">Cadastrar</button>          
     </div>
 </form>
 
+<hr />
+<form class="form-horizontal" style="max-width:450px;">
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Name</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label">Phone</label>
+        <div class="col-sm-10">
 
+            <div class="phone-list">
+
+                <div class="input-group phone-input">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="type-text">Type</span> <span class="caret"></span></button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a class="changeType" href="javascript:;" data-type-value="phone">Phone</a></li>
+                            <li><a class="changeType" href="javascript:;" data-type-value="fax">Fax</a></li>
+                            <li><a class="changeType" href="javascript:;" data-type-value="mobile">Mobile</a></li>
+                        </ul>
+                    </span>
+                    <input type="hidden" name="phone[1][type]" class="type-input" value="" />
+                    <input type="text" name="phone[1][number]" class="form-control" placeholder="+1 (999) 999 9999" />
+                </div>
+
+            </div>
+
+
+            <button type="button" class="btn btn-success btn-sm btn-add-phone"><span class="glyphicon glyphicon-plus"></span> Add Phone</button>
+        </div>
+
+    </div>
+
+</form>
 
 
 <hr />
@@ -127,7 +173,40 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
     <script type="text/javascript">
         
-        $(document).ready(function () {            
+        $(document).ready(function () {
+            $(document.body).on('click', '.changeType' ,function(){
+				$(this).closest('.phone-input').find('.type-text').text($(this).text());
+				$(this).closest('.phone-input').find('.type-input').val($(this).data('type-value'));
+			});
+			
+			$(document.body).on('click', '.btn-remove-phone' ,function(){
+				$(this).closest('.phone-input').remove();
+			});
+			
+			
+			$('.btn-add-phone').click(function(){
+
+				var index = $('.phone-input').length + 1;
+				
+				$('.phone-list').append(''+
+						'<div class="input-group phone-input">'+
+							'<span class="input-group-btn">'+
+								'<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="type-text">Type</span> <span class="caret"></span></button>'+
+								'<ul class="dropdown-menu" role="menu">'+
+									'<li><a class="changeType" href="javascript:;" data-type-value="phone">Phone</a></li>'+
+									'<li><a class="changeType" href="javascript:;" data-type-value="fax">Fax</a></li>'+
+									'<li><a class="changeType" href="javascript:;" data-type-value="mobile">Mobile</a></li>'+
+								'</ul>'+
+							'</span>'+
+							'<input type="text" name="phone['+index+'][number]" class="form-control" placeholder="+1 (999) 999 9999" />'+
+							'<input type="hidden" name="phone['+index+'][type]" class="type-input" value="" />'+
+							'<span class="input-group-btn">'+
+								'<button class="btn btn-danger btn-remove-phone" type="button"><span class="glyphicon glyphicon-remove"></span></button>'+
+							'</span>'+
+						'</div>'
+				);
+
+			});
             myControlValues();
            
         });
@@ -147,6 +226,9 @@
         }
     </script>
     <style type="text/css">
+        .phone-input{
+	margin-bottom:8px;
+}
     .highlight {
         background-color: #f7f7f9;
         border: 1px solid #e1e1e8;

@@ -11,10 +11,8 @@ namespace Gzt.Infra.CrossCutting.Identity.Models
         public User User { get; set; }       
         public string Numero { get; set; }
         public TelefoneTipo TelefoneTipo { get; set; }
+        public int TelefoneTipoId { get; set; }
     }
 
-    public enum TelefoneTipo
-    {
-        Residencial, Celular, Comercial
-    }
+   
 }

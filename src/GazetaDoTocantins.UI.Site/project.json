@@ -1,4 +1,4 @@
-﻿{
+{
   "userSecretsId": "aspnet-Gzt.UI.Site-de2246eb-3cce-41bd-ab51-a1e37e0f6934",
   "dependencies": {
     "Microsoft.NETCore.App": {
@@ -39,7 +39,11 @@
     "Microsoft.AspNetCore.Authentication.Facebook": "1.1.0",
     "Gzt.Application": "1.0.0-*",
     "Gzt.Infra.CrossCutting.Identity": "1.0.0-*",
-    "Gzt.Infra.CrossCutting.IoC": "1.0.0-*"
+    "Gzt.Infra.CrossCutting.IoC": "1.0.0-*",
+    "System.Globalization": "4.3.0",
+    "Microsoft.Extensions.Options": "1.1.0",    
+    "Microsoft.AspNetCore.Localization.Routing": "1.1.0"
+
   },
 
   "tools": {

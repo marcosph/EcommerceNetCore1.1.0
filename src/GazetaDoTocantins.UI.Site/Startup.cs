@@ -14,6 +14,9 @@ using Gzt.Infra.CrossCutting.Bus;
 using Gzt.Infra.CrossCutting.Identity.Authorization;
 using Gzt.Infra.CrossCutting.IoC;
 using System;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Localization.Routing;
 
 namespace GazetaDoTocantins.UI.Site
 {
@@ -39,6 +42,27 @@ namespace GazetaDoTocantins.UI.Site
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var supportedCultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("en-GB"),
+                    new CultureInfo("de"),
+                    new CultureInfo("fr-FR"),
+                };
+
+                    var op = new RequestLocalizationOptions()
+                    {
+                        DefaultRequestCulture = new RequestCulture(culture: "pt-BR", uiCulture: "pt-BR"),
+                        SupportedCultures = supportedCultures,
+                        SupportedUICultures = supportedCultures
+                    };
+                    op.RequestCultureProviders = new[]
+                    {
+                 new RouteDataRequestCultureProvider() { Options = op }
+            };
+
+            services.AddSingleton(op);
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 

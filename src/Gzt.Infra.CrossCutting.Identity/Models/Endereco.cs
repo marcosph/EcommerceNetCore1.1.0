@@ -6,6 +6,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Models
     public class Endereco
     {
         public int Id { get; set; }
+        public int EnderecoTipoId { get; set; }
         public EnderecoTipo EnderecoTipo { get; set; }
         public string IdentificaoDoEndereco { get; set; }
         public string NomeDestinatario { get; set; }
@@ -22,8 +23,5 @@ namespace Gzt.Infra.CrossCutting.Identity.Models
         public string PontoReferencia { get; set; } 
         public ICollection<UsuarioEndereco> UsuarioEnderecos { get; set; }        
     }
-    public enum EnderecoTipo
-    {
-        Residencial, Comercial , Outro
-    }
+   
 }

@@ -9,9 +9,10 @@ using Gzt.Infra.CrossCutting.Identity.Models;
 namespace Gzt.Infra.CrossCutting.Identity.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170302192459_tipendereco")]
+    partial class tipendereco
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.0-rtm-22752")
@@ -53,7 +54,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
                     b.HasIndex("EnderecoTipoId")
                         .IsUnique();
 
-                    b.ToTable("Endereco");
+                    b.ToTable("Enderecos");
                 });
 
             modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.EnderecoTipo", b =>
@@ -65,7 +66,7 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("EnderecoTipo");
+                    b.ToTable("EnderecoTipos");
                 });
 
             modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.Telefone", b =>
@@ -75,30 +76,15 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
                     b.Property<string>("Numero");
 
-                    b.Property<int>("TelefoneTipoId");
+                    b.Property<int>("TelefoneTipo");
 
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TelefoneTipoId")
-                        .IsUnique();
-
                     b.HasIndex("UserId");
 
-                    b.ToTable("Telefone");
-                });
-
-            modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.TelefoneTipo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Descricao");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("TelefoneTipo");
+                    b.ToTable("Telefones");
                 });
 
             modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.User", b =>
@@ -326,11 +312,6 @@ namespace Gzt.Infra.CrossCutting.Identity.Migrations
 
             modelBuilder.Entity("Gzt.Infra.CrossCutting.Identity.Models.Telefone", b =>
                 {
-                    b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.TelefoneTipo", "TelefoneTipo")
-                        .WithOne("Telefone")
-                        .HasForeignKey("Gzt.Infra.CrossCutting.Identity.Models.Telefone", "TelefoneTipoId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Gzt.Infra.CrossCutting.Identity.Models.User", "User")
                         .WithMany("Telefones")
                         .HasForeignKey("UserId");
