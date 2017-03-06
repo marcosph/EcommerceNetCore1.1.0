@@ -13,10 +13,11 @@ using AutoMapper;
 using Gzt.Infra.CrossCutting.Bus;
 using Gzt.Infra.CrossCutting.Identity.Authorization;
 using Gzt.Infra.CrossCutting.IoC;
-using System;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Localization.Routing;
+using GazetaDoTocantins.UI.Site.Filters;
+using GazetaDoTocantins.UI.Site.Services;
 
 namespace GazetaDoTocantins.UI.Site
 {
@@ -42,6 +43,15 @@ namespace GazetaDoTocantins.UI.Site
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAntiforgery(opts => opts.HeaderName = "X-XSRF-Token");
+            services.AddMvc(opts =>
+            {
+                opts.Filters.AddService(typeof(AngularAntiforgeryCookieResultFilter));
+                opts.Filters.AddService(typeof(ValidateOriginAuthorizationFilter));
+            });
+            services.AddTransient<AngularAntiforgeryCookieResultFilter>();
+            services.AddTransient<ValidateOriginAuthorizationFilter>();
+            services.AddSingleton<ITodoService, TodoService>();
             var supportedCultures = new[]
                 {
                     new CultureInfo("en-US"),

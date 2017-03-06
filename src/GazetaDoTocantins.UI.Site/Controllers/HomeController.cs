@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using GazetaDoTocantins.UI.Site.Models;
+using GazetaDoTocantins.UI.Site.Services;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GazetaDoTocantins.UI.Site.Controllers
 {
@@ -40,5 +42,6 @@ namespace GazetaDoTocantins.UI.Site.Controllers
         {
             return View();
         }
+        
     }
 }

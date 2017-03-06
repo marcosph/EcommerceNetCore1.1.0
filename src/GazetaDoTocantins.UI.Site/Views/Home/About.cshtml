@@ -1,49 +1,161 @@
-﻿@{
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+@{
+    var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
     ViewData["Title"] = "About";
+    // https://addyosmani.com/resources/essentialjsdesignpatterns/book/
+    //https://www.webucator.com/tutorial/learn-jquery/best-practices/javascript-best-practices-reading.cfm
+    // https://gold.xitu.io/entry/58abfa9b1b69e6006c12fa04
+    //https://learn.jquery.com/code-organization/concepts/
+    // https://alistapart.com/article/the-design-of-code-organizing-javascript
+    // https://jonbellah.com/better-organized-javascript/
+    //https://css-tricks.com/how-do-you-structure-javascript-the-module-pattern-edition/
     //https://www.codeproject.com/Articles/855232/Various-Forms-in-Twitter-Bootstrap
     //http://www.jerriepelser.com/blog/using-enum-aspnet-5-select-taghelper/
     //http://bootsnipp.com/snippets/80ed5
     //https://github.com/nrubiano/TechEd.Demo.SolidPrinciples/blob/master/TechEd.Demo.SolidPrinciples.Lsp.Principles/Entities/Car.cs
 }
 <h2>Identificação</h2>
-<h3>@ViewData["Message"]</h3>
-<form>
-    <div class="row">
-        <div class="col-sm-6">
-            <fieldset> <legend style="color:#e89005;">Dados Pessoais</legend> </fieldset>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Nome Completo</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">CPF</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
+<div class="bs-example" style="background-color: #f7f7f9!important;" id="divs">
+    <label class="radio-inline">
+        <input type="radio" name="PessoaTipo"  value="Fisica" id="pf_" > Pessoa Física
+    </label>
+    <label class="radio-inline">
+        <input type="radio" name="PessoaTipo" value="Juridica" > Pessoa Juridica
+    </label>
+</div>
+<figure class="highlight" style="background-color: #fff!important;">
+    <form>
+        <div class="row">
+            <div class="col-sm-6">
+                <div id="info_Fisica" style="display:block;">
+                    <fieldset> <legend style="color:#e89005;">Dados Pessoais</legend> </fieldset>
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" class="form-control input-lg" id="nomecompleto" name="nomecompleto" placeholder="Nome Completo">
+                    </div>
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" class="form-control input-lg" id="cpf" name="cpf" placeholder="CPF">
+                    </div>
+                    <label>Telefone</label>
+                    <div class="form-group row">
 
+                        <div class="col-sm-4">
+                            <select class="form-control input-lg">
+                                <option value="1">Residencial</option>
+                                <option value="2">Comercial</option>
+                                <option value="3">Celular</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control input-lg" placeholder="Telefone" />
+                        </div>
+                    </div>
+                </div> 
+                <div id="info_Juridica" style="display:none">
+                    <fieldset> <legend style="color:#e89005;">Dados da empresa</legend> </fieldset>
+                    <div class="form-group">
+                        <label>Razão Social</label>
+                        <input type="text" class="form-control input-lg" >
+                    </div>
+                    <div class="form-group">
+                        <label>Nome Fantasia</label>
+                        <input type="text" class="form-control input-lg" >
+                    </div>
+                    <label>Telefone</label>
+                    <div class="form-group row">
+
+                        <div class="col-sm-4">
+                            <select class="form-control input-lg">
+                                <option value="1">Residencial</option>
+                                <option value="2">Comercial</option>
+                                <option value="3">Celular</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-5">
+                            <input type="text" class="form-control input-lg" placeholder="Telefone" />
+                        </div>
+                    </div>
+                </div>              
+            </div>
+            <div class="col-sm-3">
+                <fieldset> <legend style="color:#e89005;">Dados de acesso</legend> </fieldset>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Email</label>
+                    <input type="email" class="form-control input-lg" id="exampleInputEmail1" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Confirmar Email</label>
+                    <input type="password" class="form-control input-lg" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Senha</label>
+                    <input type="email" class="form-control input-lg" id="exampleInputEmail1" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Confirmar Senha</label>
+                    <input type="password" class="form-control input-lg" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <div class="text-right"><button type="submit" class="btn btn-success btn-lg">Continuar</button></div>
+            </div>
         </div>
-        <div class="col-sm-3">
-            <fieldset> <legend style="color:#e89005;">Dados de acesso</legend> </fieldset>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Email</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Confirmar Email</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputEmail1">Senha</label>
-                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="exampleInputPassword1">Confirmar Senha</label>
-                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-            </div>
-            <div class="text-right"><button type="submit" class="btn btn-success">Continuar</button></div>
-        </div>
-    </div>
+    </form>
+</figure>
+
+@section Scripts
+{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
+    <script type="text/javascript">
+
+        // IIFE - Immediately Invoked Function Expression
+        (function ($, window, document) {
+            // The $ is now locally scoped
+            // Listen for the jQuery ready event on the document
+            $(function () {
+                var to = @Json.Serialize(antiforgeryRequestToken);             
+                formulario.load();                
+
+            });            
+            // The rest of the code goes here!
+
+        }(window.jQuery, window, document));
+        // The global jQuery object is passed as a parameter
+
+        $(":input[type='radio']").on("change", function () {
+            $('div[id^=info_]').hide();
+            if ($(this).prop("checked")) {
+                var checkedRadio = '#info_' + $(this).val();
+                $(checkedRadio).show();
+            }
+        });
+
+        var formulario = (function () {
+            var i = 0;
+            return {
+                get: function () {
+                    return i;
+                },
+                set: function (val) {
+                    i = val;
+                },
+                increment: function () {
+                    return i++;
+                },
+                load: function () {
+
+                    $('#cpf').mask('000.000.000-00', { reverse: true });
+                    $('#cnpj').mask('00.000.000/0000-00', { reverse: true });
+                   document.getElementById("pf_").checked = true;  
+                    
+                }
+            }
+
+        })();
+    </script>
+    <style type="text/css">
+       
+       
+   </style>
     
-    
-   
-</form>
+    }
 
