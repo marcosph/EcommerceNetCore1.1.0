@@ -1,0 +1,68 @@
+﻿
+<h1>Teste</h1>
+<p><span class="person-name"></span></p>
+@section scripts
+{
+    <script type="text/javascript">
+        // IIFE - Immediately Invoked Function Expression
+        (function ($, window, document) {
+         // The $ is now locally scoped 
+         // Listen for the jQuery ready event on the document
+            $(function () {
+                // The DOM is ready!
+               alert(formulario.getNameById(3));
+                //getName(3).done(function (data) {                   
+                //    // Updates the UI based the ajax result
+                //    $(".person-name").text(data.body);
+                //});
+            });
+            // The rest of the code goes here!
+
+        }(window.jQuery, window, document));
+        // The global jQuery object is passed as a parameter
+
+
+
+
+
+        function getName(personid) {
+            var url_ = 'https://jsonplaceholder.typicode.com' + '/posts/' + personid;            
+            var dynamicData = {};
+            dynamicData["id"] = personid;
+            // Returns the jQuery ajax method
+            return $.ajax({
+                url: url_,
+                type: "GET",
+                data:dynamicData
+                
+            });
+        }
+
+        var formulario = (function () {
+            var i = 0;
+            return {
+                getNameById: function (id) {                 
+                   return id;
+                },
+                set: function (val) {
+                    
+                    i = val;
+                },
+                increment: function () {
+                    return i++;
+                },
+                load: function () {
+
+                    $('#cpf').mask('000.000.000-00', { reverse: true });
+                    $('#cnpj').mask('00.000.000/0000-00', { reverse: true });
+                    document.getElementById("pf_").checked = true;
+
+                }
+            }
+
+        })();
+        
+
+    </script>
+    
+}

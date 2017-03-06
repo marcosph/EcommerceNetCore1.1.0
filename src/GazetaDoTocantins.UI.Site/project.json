@@ -41,9 +41,9 @@
     "Gzt.Infra.CrossCutting.Identity": "1.0.0-*",
     "Gzt.Infra.CrossCutting.IoC": "1.0.0-*",
     "System.Globalization": "4.3.0",
-    "Microsoft.Extensions.Options": "1.1.0",    
-    "Microsoft.AspNetCore.Localization.Routing": "1.1.0"
-
+    "Microsoft.Extensions.Options": "1.1.0",
+    "Microsoft.AspNetCore.Localization.Routing": "1.1.0",
+    "jQuery.Validation.Globalize": "1.1.0"
   },
 
   "tools": {

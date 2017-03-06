@@ -1,4 +1,6 @@
-﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
+﻿@model Gzt.Infra.CrossCutting.Identity.Models.AccountViewModels.RegisterViewModel
+
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery antiforgery;
 @{
     var antiforgeryRequestToken = antiforgery.GetAndStoreTokens(Context).RequestToken;
     ViewData["Title"] = "About";
@@ -15,16 +17,17 @@
     //https://github.com/nrubiano/TechEd.Demo.SolidPrinciples/blob/master/TechEd.Demo.SolidPrinciples.Lsp.Principles/Entities/Car.cs
 }
 <h2>Identificação</h2>
-<div class="bs-example" style="background-color: #f7f7f9!important;" id="divs">
-    <label class="radio-inline">
-        <input type="radio" name="PessoaTipo"  value="Fisica" id="pf_" > Pessoa Física
-    </label>
-    <label class="radio-inline">
-        <input type="radio" name="PessoaTipo" value="Juridica" > Pessoa Juridica
-    </label>
-</div>
+
 <figure class="highlight" style="background-color: #fff!important;">
-    <form>
+    <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+        <div class="bs-example" style="background-color: #f7f7f9!important;" id="divs">
+            <label class="radio-inline">
+                <input type="radio" name="PessoaTipo" value="Fisica" id="pf_"> Pessoa Física
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="PessoaTipo" value="Juridica"> Pessoa Juridica
+            </label>
+        </div>
         <div class="row">
             <div class="col-sm-6">
                 <div id="info_Fisica" style="display:block;">
@@ -81,21 +84,25 @@
             <div class="col-sm-3">
                 <fieldset> <legend style="color:#e89005;">Dados de acesso</legend> </fieldset>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Email</label>
-                    <input type="email" class="form-control input-lg" id="exampleInputEmail1" placeholder="Email">
+                    <label>Email</label>
+                    <input asp-for="Email" class="form-control input-lg" placeholder="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputPassword1">Confirmar Email</label>
-                    <input type="password" class="form-control input-lg" id="exampleInputPassword1" placeholder="Password">
+                    <label>Confirmar Email</label>
+                    <input asp-for="ConfirmEmail" class="form-control input-lg" placeholder="Confirmar Email">
+                    <span asp-validation-for="ConfirmEmail" class="text-danger"></span>
+                </div>  
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input asp-for="Password" class="form-control input-lg" placeholder="Senha">
+                    <span asp-validation-for="Password" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label for="exampleInputEmail1">Senha</label>
-                    <input type="email" class="form-control input-lg" id="exampleInputEmail1" placeholder="Email">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Confirmar Senha</label>
-                    <input type="password" class="form-control input-lg" id="exampleInputPassword1" placeholder="Password">
-                </div>
+                    <label>Confirmar Senha</label>
+                    <input asp-for="ConfirmPassword" class="form-control input-lg" placeholder="Confirmar Senha">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>            
                 <div class="text-right"><button type="submit" class="btn btn-success btn-lg">Continuar</button></div>
             </div>
         </div>
@@ -104,22 +111,18 @@
 
 @section Scripts
 {
+@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
-    <script type="text/javascript">
-
-        // IIFE - Immediately Invoked Function Expression
+    <script type="text/javascript">  
+          
         (function ($, window, document) {
-            // The $ is now locally scoped
-            // Listen for the jQuery ready event on the document
             $(function () {
-                var to = @Json.Serialize(antiforgeryRequestToken);             
-                formulario.load();                
-
-            });            
-            // The rest of the code goes here!
+                var to = @Json.Serialize(antiforgeryRequestToken);                   
+                formulario.load();               
+            });           
 
         }(window.jQuery, window, document));
-        // The global jQuery object is passed as a parameter
+       
 
         $(":input[type='radio']").on("change", function () {
             $('div[id^=info_]').hide();
@@ -130,23 +133,12 @@
         });
 
         var formulario = (function () {
-            var i = 0;
-            return {
-                get: function () {
-                    return i;
-                },
-                set: function (val) {
-                    i = val;
-                },
-                increment: function () {
-                    return i++;
-                },
+              return {               
                 load: function () {
 
                     $('#cpf').mask('000.000.000-00', { reverse: true });
                     $('#cnpj').mask('00.000.000/0000-00', { reverse: true });
-                   document.getElementById("pf_").checked = true;  
-                    
+                   document.getElementById("pf_").checked = true;                      
                 }
             }
 
