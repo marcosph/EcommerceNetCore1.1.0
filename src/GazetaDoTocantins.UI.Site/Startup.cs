@@ -32,7 +32,7 @@ namespace GazetaDoTocantins.UI.Site
 
             if (env.IsDevelopment())
             {
-                builder.AddUserSecrets();
+              ///  builder.AddUserSecrets();
             }
 
             builder.AddEnvironmentVariables();
@@ -47,10 +47,10 @@ namespace GazetaDoTocantins.UI.Site
             services.AddMvc(opts =>
             {
                 opts.Filters.AddService(typeof(AngularAntiforgeryCookieResultFilter));
-                opts.Filters.AddService(typeof(ValidateOriginAuthorizationFilter));
+               // opts.Filters.AddService(typeof(ValidateOriginAuthorizationFilter));
             });
             services.AddTransient<AngularAntiforgeryCookieResultFilter>();
-            services.AddTransient<ValidateOriginAuthorizationFilter>();
+           // services.AddTransient<ValidateOriginAuthorizationFilter>();
             services.AddSingleton<ITodoService, TodoService>();
             var supportedCultures = new[]
                 {
